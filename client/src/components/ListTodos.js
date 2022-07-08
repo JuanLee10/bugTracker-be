@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
+import axios from 'axios';
 import EditTodo from "./EditTodo";
 
 const ListTodos = () => {
@@ -8,9 +9,7 @@ const ListTodos = () => {
 
   async function deleteTodo(id) {
     try {
-      const res = await fetch(`/todos/${id}`, {
-        method: "DELETE",
-      });
+      const res = await axios.delete(`/todos/${id}`);
 
       setTodos(todos.filter((todo) => todo.tid !== id));
     } catch (err) {
@@ -19,17 +18,13 @@ const ListTodos = () => {
   }
 
   async function getTodos() {
-    const res = await fetch("/todos");
-
-    const todoArray = await res.json();
-    setTodos(todoArray);
+    const res = await axios.get("/todos");
+    setTodos(res.data);
   }
 
   useEffect(() => {
     getTodos();
   }, []);
-
-  console.log(todos);
 
   return (
     <Fragment>

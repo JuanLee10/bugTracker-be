@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Fragment, useState } from "react";
 
 const EditTodo = ({ todo }) => {
@@ -12,10 +13,8 @@ const EditTodo = ({ todo }) => {
 
         //proxy 
 
-        const response = await fetch(`/todos/${todo.tid}`, {
-            method: "PUT",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(body)
+        const response = await axios.put(`/todos/${todo.tid}`, {
+            description
         });
        window.location = "/";
     } catch (err) {

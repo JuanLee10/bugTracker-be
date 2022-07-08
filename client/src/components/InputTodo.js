@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Fragment, useState } from "react";
 
 const InputTodo = () => {
@@ -6,10 +7,8 @@ const InputTodo = () => {
     e.preventDefault();
     try {
       const body = { description };
-      const response = await fetch("/todos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+      const response = await axios.post("/todos", {
+        description 
       });
       
       window.location = "/";
