@@ -1,6 +1,6 @@
 const express = require("express");
 
-const pool = require("../db");
+const db = require("../db");
 
 const router = new express.Router();
 //ROUTES//
@@ -8,7 +8,7 @@ const router = new express.Router();
 router.get("/", async (req, res) => {
   try {
     const { description } = req.body;
-    const allTodos = await pool.query("SELECT * FROM todo");
+    const allTodos = await db.query("SELECT * FROM todo");
     res.json(allTodos.rows);
   } catch (err) {
     console.error(err.message);
@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const todos = await pool.query("SELECT * FROM todo WHERE tid = $1", [id]);
+    const todos = await db.query("SELECT * FROM todo WHERE tid = $1", [id]);
     res.json(todos.rows);
   } catch (err) {
     console.error(err.message);
@@ -29,7 +29,7 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { description } = req.body;
-    const newTodo = await pool.query(
+    const newTodo = await db.query(
       "INSERT INTO todo (description) VALUES ($1) RETURNING *",
       [description]
     );
@@ -43,7 +43,7 @@ router.patch("/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const { description } = req.body;
-    const updateTodo = await pool.query(
+    const updateTodo = await db.query(
       "UPDATE todo SET description = $1 WHERE tid = $2",
       [description, id]
     );
@@ -57,7 +57,7 @@ router.patch("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const deleteTodo = await pool.query("DELETE FROM todo WHERE tid = $1", [
+    const deleteTodo = await db.query("DELETE FROM todo WHERE tid = $1", [
       id,
     ]);
     res.json("todo was deleted");
